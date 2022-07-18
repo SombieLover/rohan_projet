@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService, LoginPayload, RegisterPayload } from './';
 import { CurrentUser } from './../common/decorator/current-user.decorator';
 import { User, UsersService } from './../user';
+import { Response } from 'express';
 
 @Controller('api/auth')
 @ApiTags('authentication')
@@ -12,6 +13,11 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UsersService,
   ) {}
+
+  @Get('login')
+  async loginView(@Res() res: Response){
+    res.render('login', {})
+  }
 
   @Post('login')
   @ApiResponse({ status: 201, description: 'Successful Login' })
